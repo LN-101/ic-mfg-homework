@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《集成电路制造与封装》作业答案与讲解索引</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f6f8fb;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+    .wrap {
+      max-width: 860px;
+      margin: 44px auto;
+      padding: 0 20px;
+    }
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 60%, #0f766e 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 30px 34px;
+      margin-bottom: 26px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+    }
+    .header h1 { margin: 0 0 8px; font-size: 26px; }
+    .header p { margin: 0; opacity: 0.9; font-size: 14.5px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 640px) {
+      .wrap { margin: 18px auto 36px; padding: 0 14px; }
+      .header { padding: 22px 20px; border-radius: 14px; }
+      .header h1 { font-size: 21px; }
+      .card { padding: 18px 18px; }
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+      border-color: #93c5fd;
+    }
+    .card.disabled {
+      opacity: 0.62;
+      pointer-events: none;
+      background: #f8fafc;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .pill-done { background: #dcfce7; color: #166534; }
+    .pill-todo { background: #e2e8f0; color: #475569; }
+    .card h2 { margin: 0 0 8px; font-size: 19px; color: #0f172a; }
+    .card p { margin: 0 0 14px; font-size: 14px; color: #475569; }
+    .meta {
+      font-size: 13px;
+      color: #64748b;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .go { color: #1d4ed8; font-weight: 700; }
+    .note {
+      margin-top: 24px;
+      padding: 14px 18px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #1d4ed8;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="header">
+      <h1>《集成电路制造与封装》AI 答案与讲解</h1>
+      <p>依据课程 PPT（2025 版吴汉明教材体系）逐题核对公式与机理 · 支持「仅看手写答案模式」一键切换与打印</p>
+    </section>
+
+    <div class="grid">
+      <a class="card" href="./第1次作业_光刻工艺_答案与讲解.html">
+        <div>
+          <span class="pill pill-done">已完成 · 5 题</span>
+          <h2>第 1 次作业：光刻工艺</h2>
+          <p>教材 p51–52 思考题 1、5、7、8、13：光刻定义与质量要求、曝光方式演进、光源波长演进、线宽均匀性、BIM vs PSM 原理图解。</p>
+        </div>
+        <div class="meta">
+          <span>截止：2026-11-30 23:59</span>
+          <span class="go">进入查看 →</span>
+        </div>
+      </a>
+
+      <a class="card" href="./第2次作业_刻蚀工艺_答案与讲解.html">
+        <div>
+          <span class="pill pill-done">已完成 · 5 题</span>
+          <h2>第 2 次作业：刻蚀工艺</h2>
+          <p>平台 4 道简答题 + 教材 p72 思考题 2：物理/化学刻蚀对比、高选择比选型、Under-cut 钻蚀、Micro-trench 微沟槽、刻蚀速率/方向性/选择比计算。</p>
+        </div>
+        <div class="meta">
+          <span>截止：2026-11-30 23:59</span>
+          <span class="go">进入查看 →</span>
+        </div>
+      </a>
+
+      <div class="card disabled">
+        <div>
+          <span class="pill pill-todo">待完成 · 5 题</span>
+          <h2>第 3 次作业：薄膜沉积工艺</h2>
+          <p>教材 p92 思考题 2、7 + 参考书热氧化补充题 3 道（含 Deal-Grove 氧化时间计算）。</p>
+        </div>
+        <div class="meta">
+          <span>截止：2026-12-10 23:59</span>
+          <span>后续生成</span>
+        </div>
+      </div>
+
+      <div class="card disabled">
+        <div>
+          <span class="pill pill-todo">待完成 · 4 题</span>
+          <h2>第 4 次作业：掺杂工艺</h2>
+          <p>教材 p138–139 思考题 1、3、10 + 参考书磷预淀积/再分布结深计算题。</p>
+        </div>
+        <div class="meta">
+          <span>截止：2026-12-16 23:59</span>
+          <span>后续生成</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>使用建议：</strong>打开任意一次作业页面后，右上角可切换 <strong>「仅看手写答案模式」</strong>（清爽抄写整理）或 <strong>「答案 + 深度讲解」</strong>（复习理解底层物理机理与易错点），所有图表均采用本地内联矢量 SVG，离线浏览器直接双击即可完整查看。
+    </div>
+  </div>
+</body>
+</html>

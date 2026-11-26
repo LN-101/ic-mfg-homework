@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第1次作业（光刻工艺）· 参考答案与深度讲解</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --primary: #1d4ed8;
+      --primary-dark: #1e3a8a;
+      --primary-soft: #eff6ff;
+      --primary-border: #bfdbfe;
+      --answer-bg: #f0fdf4;
+      --answer-border: #bbf7d0;
+      --answer-accent: #15803d;
+      --explain-bg: #fafbff;
+      --explain-border: #dbeafe;
+      --warn-bg: #fffbeb;
+      --warn-border: #fde68a;
+      --warn-text: #92400e;
+      --pitfall-bg: #fef2f2;
+      --pitfall-border: #fecaca;
+      --pitfall-text: #991b1b;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 15.5px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+    }
+    .topbar-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .nav-links a.home-link {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary-dark);
+    }
+    .nav-links a.home-link:hover { opacity: 0.9; }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn {
+      cursor: pointer;
+      border: 1px solid var(--primary-border);
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 999px;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { background: #dbeafe; }
+    .btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 26px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f2942 0%, #1d4ed8 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 28px rgba(29, 78, 216, 0.18);
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.3;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 22px;
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 12px;
+    }
+    .hero-tip {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border-left: 3px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 13.5px;
+    }
+
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      scroll-margin-top: 72px;
+    }
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .q-title-wrap { flex: 1; }
+    .q-source-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 6px;
+    }
+    .badge-book { background: #f1f5f9; color: #334155; }
+    .badge-ppt { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-ext { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+    .q-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.45;
+    }
+
+    .box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 14px;
+    }
+    .box-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+    .answer-box {
+      background: var(--answer-bg);
+      border: 1px solid var(--answer-border);
+    }
+    .answer-box .box-title { color: var(--answer-accent); }
+
+    .explain-box {
+      background: var(--explain-bg);
+      border: 1px solid var(--explain-border);
+    }
+    .explain-box .box-title { color: var(--primary-dark); }
+
+    .pitfall-box {
+      background: var(--pitfall-bg);
+      border: 1px solid var(--pitfall-border);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 14.5px;
+    }
+    .pitfall-box strong { color: var(--pitfall-text); }
+
+    .analogy {
+      background: #ffffff;
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+      font-size: 14.8px;
+      color: #334155;
+    }
+
+    ul, ol {
+      margin: 6px 0 10px;
+      padding-left: 22px;
+    }
+    li { margin-bottom: 6px; }
+    p { margin: 6px 0 10px; }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.2px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 9px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #e2e8f0;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    .formula-block {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin: 10px 0;
+      text-align: center;
+      font-size: 18px;
+      font-family: "Cambria Math", "Times New Roman", Georgia, serif;
+      color: #0f172a;
+    }
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+      font-size: 0.92em;
+      line-height: 1.15;
+    }
+    .frac .num {
+      border-bottom: 1.5px solid #0f172a;
+      padding: 0 5px 2px;
+    }
+    .frac .den {
+      padding: 2px 5px 0;
+    }
+
+    .diagram-card {
+      background: #fff;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      padding: 14px;
+      margin: 14px 0;
+      text-align: center;
+    }
+    .diagram-card svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .ext-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--warn-text);
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      padding: 0 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+
+    body.answer-only .explain-box { display: none; }
+
+    footer {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 13px;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 15px; }
+      .topbar { padding: 8px 12px; }
+      .topbar-inner { gap: 8px; }
+      .nav-links { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; max-width: 100%; }
+      .nav-links a { flex-shrink: 0; font-size: 13px; padding: 5px 10px; }
+      .controls { width: 100%; justify-content: flex-end; }
+      .container { margin: 14px auto 40px; padding: 0 12px; }
+      .hero { padding: 20px 18px; border-radius: 14px; }
+      .hero h1 { font-size: 20px; }
+      .q-card { padding: 16px 15px; border-radius: 12px; }
+      .q-header { gap: 10px; }
+      .q-num { width: 30px; height: 30px; font-size: 14px; }
+      .q-title { font-size: 16.5px; }
+      .box { padding: 13px 14px; }
+      .formula-block { font-size: 16px; padding: 10px 12px; }
+      .table-wrap { -webkit-overflow-scrolling: touch; }
+      th, td { padding: 7px 9px; font-size: 13.5px; }
+    }
+
+    @media print {
+      .topbar { display: none; }
+      body { background: #fff; font-size: 13.5px; }
+      .container { max-width: 100%; margin: 0; padding: 0; }
+      .q-card { box-shadow: none; break-inside: avoid; }
+      .hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <nav class="nav-links">
+      <a class="home-link" href="./index.html">← 作业总览</a>
+      <a href="#q1">第1题</a>
+      <a href="#q2">第2题</a>
+      <a href="#q3">第3题</a>
+      <a href="#q4">第4题</a>
+      <a href="#q5">第5题</a>
+      <a href="./第2次作业_刻蚀工艺_答案与讲解.html">切换：第2次作业 →</a>
+    </nav>
+    <div class="controls">
+      <button id="toggleModeBtn" class="btn" onclick="toggleAnswerOnly()">仅看手写答案模式</button>
+      <button class="btn" onclick="window.print()">打印 / 存PDF</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="hero-tag">《集成电路制造与封装》 · 授课教师：王鹏</div>
+    <h1>第 1 次作业：光刻工艺（答案与深度讲解）</h1>
+    <div class="hero-meta">
+      <span>📌 题目范围：教材第2章 p51–52 思考题 1、5、7、8、13（共 5 题）</span>
+      <span>⏰ 截止时间：2026-11-30 23:59</span>
+      <span>📖 教材：吴汉明《集成电路制造技术》（2025.12）</span>
+    </div>
+    <div class="hero-tip">
+      <strong>提交提醒：</strong>作业拍成照片后<strong>合并为一个 PDF</strong> 上传至网络教学平台，<strong>纸面写上学号和姓名</strong>。点击右上角「仅看手写答案模式」可一键隐藏深度讲解，方便手写整理。
+    </div>
+  </section>
+
+  <!-- ==================== 第 1 题 ==================== -->
+  <article class="q-card" id="q1">
+    <div class="q-header">
+      <div class="q-num">1</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p51 · 思考题 1</span>
+          <span class="badge badge-ppt">来源：第2章 光刻工艺 · Slide 8、9、13、16–18</span>
+        </div>
+        <h2 class="q-title">什么是光刻？光刻工艺总的质量要求是什么？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p><strong>1. 什么是光刻：</strong></p>
+      <p>光刻（Photolithography）是将<strong>掩模版（光刻版）上的几何图形</strong>转移到覆盖在半导体衬底表面的<strong>对光辐照敏感的薄膜材料（光刻胶）</strong>上去的工艺过程。由于光刻胶图形本身只是临时印模，并非最终器件结构，后续还需借助刻蚀、离子注入等工艺，将光刻胶图形进一步转移到下层器件材料上（即“光刻胶图形化 + 晶圆图形化”）。</p>
+
+      <p><strong>2. 光刻工艺总的质量要求：</strong></p>
+      <ul>
+        <li><strong>总体目标：</strong>根据电路设计要求，在衬底表面生成<strong>尺寸精确</strong>的特征图形，且图形在衬底表面的<strong>位置准确</strong>、与其他层器件结构的<strong>关联（套刻对准）正确</strong>。</li>
+        <li><strong>具体核心质量指标：</strong>
+          <ol>
+            <li><strong>高分辨率（小关键尺寸 CD）：</strong>能够清晰投影并分辨电路所需的最小特征尺寸；</li>
+            <li><strong>精确的特征线宽（CD）控制与均匀性：</strong>整片晶圆及批次内图形尺寸准确、波动小、线宽粗糙度（LWR）低；</li>
+            <li><strong>高对准与套刻精度（Overlay）：</strong>上下层图形准确对准，层间对准偏差一般须小于图形最小间距的 1/3；</li>
+            <li><strong>足够大的焦深（DOF）与工艺窗口（含曝光宽容度 EL）：</strong>在曝光剂量和焦距存在微小波动时仍能稳定成像，保证良率；</li>
+            <li><strong>高对比度与优良的光刻胶形貌：</strong>图形侧壁陡直、无残胶/倒胶/颗粒等缺陷，具备抗后续刻蚀或注入的能力；</li>
+            <li><strong>高产率（Throughput）与合理成本：</strong>满足集成电路大规模量产的经济性要求。</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>光刻就像“纳米级的高精度洗照片 + 晒版”——掩模版是底片，光刻胶是相纸上的感光乳剂，光刻机是超高精度投影放大（这里是缩小）机。只不过洗完照片（显影）后，还要拿它当“保护模板”，指导后面的刻蚀机去雕琢硅片。
+      </div>
+      <p><strong>为什么光刻被称为前道制造的核心？</strong>课件 Slide 9 给出一组硬核数据：一套完整芯片通常需要几十次光刻，光刻成本约占整个芯片制造的 <strong>35%</strong>，耗时占 <strong>40%～60%</strong>。摩尔定律之所以能不断微缩，本质上就是光刻机不断把最小特征尺寸（CD）做小。</p>
+      <p><strong>与器件物理、数模电的桥梁：</strong></p>
+      <ul>
+        <li><strong>尺寸精确（CD）→ 决定 MOSFET 栅长 L：</strong>栅长直接影响驱动电流（I<sub>on</sub> ∝ W/L）、阈值电压 V<sub>th</sub>（过短触发短沟道效应）和开关速度；</li>
+        <li><strong>套刻精度（Overlay）→ 决定多层电路会不会断路/短路：</strong>芯片有十几层金属互连和接触孔，如果某一层偏了超过最小间距的 1/3（Slide 17），上下层通孔就会“踩空”导致开路，或碰上相邻导线导致短路；</li>
+        <li><strong>工艺窗口（EL + DOF）→ 决定工厂量产良率：</strong>现实中的硅片并非绝对平整，光源功率也会轻微起伏，只有工艺窗口够宽，大批量生产才不会动不动报废整片晶圆。</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ==================== 第 2 题 ==================== -->
+  <article class="q-card" id="q2">
+    <div class="q-header">
+      <div class="q-num">2</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p51 · 思考题 5</span>
+          <span class="badge badge-ppt">来源：第2章 光刻工艺 · Slide 11、12、40、43、45</span>
+          <span class="badge badge-ext">含通用工艺优缺点补充</span>
+        </div>
+        <h2 class="q-title">光刻机曝光方式的发展经历了哪几个阶段？其优点和缺点分别是什么？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p>光刻机的曝光方式依次经历了<strong>接触式曝光、接近式曝光、投影式曝光</strong>三个主要阶段；其中投影式光刻机又进一步发展为<strong>扫描投影 → 分步重复投影（Stepper）→ 步进扫描投影（Scanner）</strong>三个子阶段（Slide 40）。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:16%;">曝光方式</th>
+              <th style="width:24%;">基本原理</th>
+              <th style="width:30%;">主要优点</th>
+              <th style="width:30%;">主要缺点</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. 接触式曝光</strong><br>（Contact）</td>
+              <td>掩模版与晶圆表面的光刻胶直接紧密接触，进行 1:1 曝光。</td>
+              <td>① 设备结构简单、成本低；<br>② 掩模紧贴光刻胶，几乎无衍射扩散，早期分辨率相对较高（微米级）。</td>
+              <td>① 机械接触极易划伤掩模、引起光刻胶粘连与颗粒污染；<br>② 掩模版寿命短、芯片良率低；<br>③ 1:1 掩模制造困难，不适合大规模精细量产。</td>
+            </tr>
+            <tr>
+              <td><strong>2. 接近式曝光</strong><br>（Proximity）</td>
+              <td>掩模版与光刻胶之间保持微小空气间隙（约 10 μm），非接触 1:1 曝光。</td>
+              <td>① 避免了掩模与晶圆直接接触，大幅减少磨损与颗粒缺陷；<br>② 掩模版寿命显著延长，设备仍较简单。</td>
+              <td>① 光穿过约 10 μm 间隙时发生明显衍射扩散，<strong>分辨率反而低于接触式</strong>；<br>② 仍为 1:1 等比例曝光，掩模制作精度要求极高。</td>
+            </tr>
+            <tr>
+              <td><strong>3. 投影式曝光</strong><br>（Projection）</td>
+              <td>掩模与晶圆完全分离，经投影物镜按比例缩小（一般为 4:1）成像于晶圆表面。</td>
+              <td>① 无接触、污染极少、掩模寿命长；<br>② 缩小投影大幅降低掩模版制造难度；<br>③ 结合大 NA 物镜、浸没式、EUV 等可实现极高分辨率（纳米级），且步进扫描+双工件台兼顾高良率与高产率，是绝对主流。</td>
+              <td>① 投影物镜、精密对准与双工件台系统极其复杂；<br>② 设备造价极高（先进 EUV 光刻机单台超 2.5 亿欧元），维护与运行成本昂贵。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><em>注：投影式内部演进简述——① 扫描投影（1:1 全片扫描，适合早期大晶圆但分辨率受限）；② 分步重复投影（Stepper，缩小投影、逐个曝光场步进曝光，分辨率大增但大视野物镜制造难）；③ 步进扫描投影（Scanner，狭缝动态扫描+步进，只使用物镜中心成像最优区域，兼顾超大曝光视场与超高分辨率）。</em></p>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>接触式像“刻章盖印”（盖得清楚但印章总沾泥弄脏）；接近式像“把手电筒贴近镂空纸板照墙”（纸板不脏了，但隔了一段距离影子边缘发虚）；投影式像“用顶级单反镜头把大海报微缩投到微缩胶片上”（底片不碰相纸、底片还能做大 4 倍更好画，就是镜头贵得惊人）。
+      </div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三种曝光方式原理对比">
+          <defs>
+            <marker id="arrBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+            </marker>
+          </defs>
+          <!-- Panel 1: Contact -->
+          <rect x="10" y="10" width="250" height="210" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="135" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">① 接触式曝光（1:1）</text>
+          <!-- Rays -->
+          <line x1="75" y1="50" x2="75" y2="122" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <line x1="135" y1="50" x2="135" y2="122" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <line x1="195" y1="50" x2="195" y2="122" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <!-- Mask touching PR -->
+          <rect x="45" y="114" width="180" height="12" fill="#e0f2fe" stroke="#0284c7"/>
+          <rect x="45" y="122" width="42" height="4" fill="#1e293b"/>
+          <rect x="114" y="122" width="42" height="4" fill="#1e293b"/>
+          <rect x="183" y="122" width="42" height="4" fill="#1e293b"/>
+          <!-- PR & Wafer -->
+          <rect x="45" y="126" width="180" height="14" fill="#fbbf24" stroke="#b45309"/>
+          <rect x="45" y="140" width="180" height="24" fill="#94a3b8" stroke="#475569"/>
+          <text x="135" y="156" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">硅片衬底</text>
+          <text x="135" y="185" text-anchor="middle" font-size="11.5" fill="#dc2626">紧贴光刻胶 → 易磨损/沾污</text>
+          <text x="135" y="203" text-anchor="middle" font-size="11" fill="#475569">无间隙，几乎无衍射展宽</text>
+
+          <!-- Panel 2: Proximity -->
+          <rect x="285" y="10" width="250" height="210" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="410" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">② 接近式曝光（1:1）</text>
+          <line x1="350" y1="50" x2="350" y2="95" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <line x1="410" y1="50" x2="410" y2="95" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <line x1="470" y1="50" x2="470" y2="95" stroke="#2563eb" stroke-width="2" marker-end="url(#arrBlue)"/>
+          <!-- Mask with gap -->
+          <rect x="320" y="96" width="180" height="12" fill="#e0f2fe" stroke="#0284c7"/>
+          <rect x="320" y="104" width="42" height="4" fill="#1e293b"/>
+          <rect x="389" y="104" width="42" height="4" fill="#1e293b"/>
+          <rect x="458" y="104" width="42" height="4" fill="#1e293b"/>
+          <!-- Diffracted rays in gap -->
+          <path d="M 362 108 L 354 128 M 389 108 L 397 128" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="3,2"/>
+          <path d="M 431 108 L 423 128 M 458 108 L 466 128" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="3,2"/>
+          <text x="506" y="121" font-size="10.5" fill="#b45309" font-weight="700">~10μm</text>
+          <!-- PR & Wafer -->
+          <rect x="320" y="128" width="180" height="14" fill="#fbbf24" stroke="#b45309"/>
+          <rect x="320" y="142" width="180" height="24" fill="#94a3b8" stroke="#475569"/>
+          <text x="410" y="158" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">硅片衬底</text>
+          <text x="410" y="185" text-anchor="middle" font-size="11.5" fill="#b45309">微小间隙 → 衍射变模糊</text>
+          <text x="410" y="203" text-anchor="middle" font-size="11" fill="#475569">不接触延长掩模寿命，分辨率下降</text>
+
+          <!-- Panel 3: Projection -->
+          <rect x="560" y="10" width="250" height="210" rx="10" fill="#eff6ff" stroke="#93c5fd"/>
+          <text x="685" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">③ 投影式曝光（4:1 缩小）</text>
+          <!-- Mask -->
+          <rect x="595" y="52" width="180" height="10" fill="#e0f2fe" stroke="#0284c7"/>
+          <rect x="595" y="59" width="38" height="3" fill="#1e293b"/>
+          <rect x="666" y="59" width="38" height="3" fill="#1e293b"/>
+          <rect x="737" y="59" width="38" height="3" fill="#1e293b"/>
+          <!-- Lens -->
+          <ellipse cx="685" cy="100" rx="68" ry="13" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.8"/>
+          <text x="685" y="104" text-anchor="middle" font-size="11" fill="#1e3a8a" font-weight="700">缩小投影物镜系统</text>
+          <!-- Focusing rays -->
+          <line x1="635" y1="62" x2="650" y2="90" stroke="#2563eb" stroke-width="1.5"/>
+          <line x1="735" y1="62" x2="720" y2="90" stroke="#2563eb" stroke-width="1.5"/>
+          <line x1="650" y1="110" x2="668" y2="136" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+          <line x1="720" y1="110" x2="702" y2="136" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+          <!-- PR & Wafer -->
+          <rect x="615" y="138" width="140" height="13" fill="#fbbf24" stroke="#b45309"/>
+          <rect x="615" y="151" width="140" height="22" fill="#94a3b8" stroke="#475569"/>
+          <text x="685" y="166" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">硅片衬底（双工件台）</text>
+          <text x="685" y="191" text-anchor="middle" font-size="11.5" fill="#15803d" font-weight="700">无接触 + 4:1缩小 + 极高分辨率</text>
+          <text x="685" y="207" text-anchor="middle" font-size="11" fill="#475569">现今 IC 量产绝对主力，设备昂贵</text>
+        </svg>
+        <div class="diagram-caption">图 1：接触式、接近式与投影式曝光光路及核心权衡示意（参考第 2 章 Slide 11、40、43）</div>
+      </div>
+
+      <p><span class="ext-tag">【外部补充 / 通用原理】</span><strong>为什么接近式曝光的分辨率反而比接触式差？</strong>在物理光学中，接近式光刻的最小分辨率近似满足 <code>R ≈ √(λ · g)</code>（其中 <code>g</code> 为掩模到光刻胶的间隙）。一旦拉开约 10 μm 的间隙，光线穿过狭缝后就会像水波穿过石缝一样向两边散开（菲涅耳衍射），导致投在光刻胶上的阴影边缘发虚。而投影式光刻干脆拉远距离，中间放进一套庞大的多片式精密透镜，把衍射散开的各级衍射光重新收集并精确汇聚到焦平面上，同时做到 4:1 缩小投影——画在掩模上的线条可以比芯片上粗 4 倍，极大减轻了掩模加工的难度！</p>
+    </div>
+  </article>
+
+  <!-- ==================== 第 3 题 ==================== -->
+  <article class="q-card" id="q3">
+    <div class="q-header">
+      <div class="q-num">3</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p51 · 思考题 7</span>
+          <span class="badge badge-ppt">来源：第2章 光刻工艺 · Slide 13、40、50</span>
+          <span class="badge badge-ext">含 h-line / F₂ 过渡节点说明</span>
+        </div>
+        <h2 class="q-title">随着光刻机的分辨率越来越高，光刻机的光源经历了哪些变化？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p>根据光刻分辨率的<strong>瑞利判据</strong>：</p>
+      <div class="formula-block">
+        CD = k<sub>1</sub> × <span class="frac"><span class="num">λ</span><span class="den">NA</span></span>
+      </div>
+      <p>为获得更小的关键尺寸 CD（即更高的分辨率），光刻机光源的演进遵循<strong>波长 λ 不断缩短</strong>（从近紫外 → 深紫外 → 极紫外）的发展主线，具体经历了以下阶段：</p>
+      <ol>
+        <li><strong>常规紫外光源（Regular UV，高压汞灯谱线）：</strong>
+          <ul>
+            <li><strong>g 线（g-line）</strong>：波长 <strong>436 nm</strong>（用于微米级工艺）；</li>
+            <li><em>（过渡：h 线 405 nm）</em>；</li>
+            <li><strong>i 线（i-line）</strong>：波长 <strong>365 nm</strong>（推进至 0.35 μm 附近节点）。</li>
+          </ul>
+        </li>
+        <li><strong>深紫外光源（DUV，准分子激光器）：</strong>
+          <ul>
+            <li><strong>KrF（氟化氪）准分子激光</strong>：波长 <strong>248 nm</strong>（推进至 250 nm～130 nm 节点）；</li>
+            <li><strong>ArF（氟化氩）准分子激光</strong>：波长 <strong>193 nm</strong>（早期为干式 ArF；随后引入超纯水介质构成<strong>浸没式 ArF 光刻</strong>，水的折射率 n ≈ 1.44，使数值孔径 NA 突破 1.0 达 1.35，等效波长缩短至约 134 nm，结合多重曝光一路推进至 28 nm～7 nm 节点）。</li>
+          </ul>
+        </li>
+        <li><strong>极紫外光源（EUV，激光产生等离子体 LPP）：</strong>
+          <ul>
+            <li><strong>EUV 极紫外光</strong>：波长 <strong>13.5 nm</strong>（波长实现数量级跃升，采用全反射式多层膜光学系统与真空环境，支撑 7 nm 及以下先进工艺节点）。</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>波长 λ 就像画画用的“笔尖粗细”——想在米粒上刻字，拿粗毛笔（436 nm）怎么画都会糊成一团，必须不断换更细的针管笔（365 → 248 → 193 nm），最后直接换上激光雕刻刀（13.5 nm EUV）。
+      </div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 820 155" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="光刻光源波长演进时间轴">
+          <defs>
+            <linearGradient id="uvGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="55%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <line x1="55" y1="68" x2="765" y2="68" stroke="url(#uvGrad)" stroke-width="6" stroke-linecap="round"/>
+          <!-- Nodes -->
+          <g transform="translate(80,68)">
+            <circle r="10" fill="#2563eb" stroke="#fff" stroke-width="3"/>
+            <text y="-22" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">g-line</text>
+            <text y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">436 nm</text>
+            <text y="45" text-anchor="middle" font-size="11" fill="#64748b">常规紫外（汞灯）</text>
+          </g>
+          <g transform="translate(220,68)">
+            <circle r="10" fill="#2563eb" stroke="#fff" stroke-width="3"/>
+            <text y="-22" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">i-line</text>
+            <text y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">365 nm</text>
+            <text y="45" text-anchor="middle" font-size="11" fill="#64748b">常规紫外（汞灯）</text>
+          </g>
+          <g transform="translate(365,68)">
+            <circle r="10" fill="#4f46e5" stroke="#fff" stroke-width="3"/>
+            <text y="-22" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">KrF DUV</text>
+            <text y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">248 nm</text>
+            <text y="45" text-anchor="middle" font-size="11" fill="#64748b">深紫外准分子激光</text>
+          </g>
+          <g transform="translate(525,68)">
+            <circle r="11" fill="#4f46e5" stroke="#fff" stroke-width="3"/>
+            <text y="-22" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">ArF DUV / 浸没式</text>
+            <text y="26" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">193 nm</text>
+            <text y="45" text-anchor="middle" font-size="11" fill="#0369a1">浸水 n≈1.44 等效~134nm</text>
+          </g>
+          <g transform="translate(710,68)">
+            <circle r="13" fill="#7c3aed" stroke="#fde68a" stroke-width="3.5"/>
+            <text y="-24" text-anchor="middle" font-size="13.5" font-weight="800" fill="#5b21b6">EUV 极紫外</text>
+            <text y="28" text-anchor="middle" font-size="13.5" font-weight="800" fill="#5b21b6">13.5 nm</text>
+            <text y="47" text-anchor="middle" font-size="11" fill="#64748b">真空 + 全反射多层膜</text>
+          </g>
+          <text x="410" y="142" text-anchor="middle" font-size="12" fill="#475569">← 波长 λ 持续缩短，分辨率（最小 CD）不断提升 →</text>
+        </svg>
+        <div class="diagram-caption">图 2：光刻机光源波长演进路径（紧扣第 2 章 Slide 13、40）</div>
+      </div>
+
+      <p><strong>公式拆解与工程权衡（Trade-off）：</strong></p>
+      <ul>
+        <li>看瑞利公式 <code>CD = k<sub>1</sub>·λ / NA</code>，同时还要注意焦深公式 <span class="ext-tag">【外部补充】</span><code>DOF = k<sub>2</sub>·λ / NA²</code>：增大 NA 虽然让分辨率变好，但会让焦深按平方急剧变浅（失焦更容易糊）；缩短波长 λ 也能提升分辨率，且对焦深的牺牲比增大 NA 更温和。</li>
+        <li><strong>为什么 193 nm（ArF）用了这么久，没直接用 157 nm（F₂ 真空紫外）？</strong><span class="ext-tag">【外部补充 / 通用原理】</span>因为波长短于 190 nm 后，连传统石英玻璃透镜和空气都会强烈吸收紫外光，研发 157 nm 氟化钙透镜极其困难；而台积电林本坚提出在 193 nm 镜头和硅片之间注入超纯水（Slide 13 右下角图），利用水的折射率 n ≈ 1.44 瞬间让 NA 突破空气的理论上限 1.0，直接延续了 193 nm 二十年的生命力！</li>
+        <li><strong>EUV（13.5 nm）带来的颠覆（Slide 50）：</strong>几乎所有材料对 13.5 nm 极紫外光都有极强吸收，且单层反射率不足 1%，因此 EUV 光刻机必须在高真空腔内工作，所有透镜和掩模版全部放弃透射式，改用数十层硅/钼交替的多层膜布拉格反射镜。</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ==================== 第 4 题 ==================== -->
+  <article class="q-card" id="q4">
+    <div class="q-header">
+      <div class="q-num">4</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p51 · 思考题 8</span>
+          <span class="badge badge-ppt">来源：第2章 光刻工艺 · Slide 18–20、23–25、31–37、54–57</span>
+          <span class="badge badge-ext">含综合整理与工艺细节补充</span>
+        </div>
+        <h2 class="q-title">简述光刻胶工艺线宽均匀性的影响因素，并说明其主要的改进措施。</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p><strong>一、影响光刻胶工艺线宽均匀性（CDU）的主要因素：</strong></p>
+      <ol>
+        <li><strong>旋涂膜厚不均匀：</strong>光刻胶黏度、温度波动、旋涂转速不稳定或晶圆边缘胶堆积，导致整片光刻胶厚度不均，引起光强吸收和干涉差异，直接造成线宽偏差。</li>
+        <li><strong>烘烤与冷却温度不均匀：</strong>前烘（PAB/软烘）温度不均影响溶剂挥发；尤其是<strong>曝光后烘焙（PEB）</strong>热板温差会显著改变光化学反应速率与酸扩散长度，是造成面内线宽漂移的关键因素；冷却不均匀也会引入热误差。</li>
+        <li><strong>曝光光学与驻波效应：</strong>曝光光源能量分布不均匀、晶圆翘曲或表面台阶导致的离焦（Focus 偏离焦深 DOF）、光刻胶/衬底界面反射引起的<strong>驻波效应</strong>（沿胶厚方向光强分布不均），以及疏密图形差异导致的光学邻近效应。</li>
+        <li><strong>显影工艺不均匀：</strong>显影液喷淋覆盖先后不一致、显影液浓度/温度波动、停留时间差异以及冲洗甩干过程不均。</li>
+        <li><strong>衬底状态与微环境干扰：</strong>衬底表面清洗或 HMDS 疏水化不充分导致附着力不良，以及洁净室微环境温湿度波动或空气中微量污染气体影响。</li>
+      </ol>
+
+      <p><strong>二、主要改进措施：</strong></p>
+      <ol>
+        <li><strong>优化旋涂工艺与边缘去胶：</strong>精确控制光刻胶黏度、供胶温度与多段旋涂转速程序，并配合化学去边（EBR）、晶圆边缘曝光（WEE）及背面冲洗，提升胶厚均匀性并消除边缘堆积。</li>
+        <li><strong>涂覆底部抗反射涂层（BARC/ARC）：</strong>在旋涂光刻胶前先旋涂抗反射涂层，吸收透过光刻胶的入射光，有效抑制衬底反射引起的驻波效应。</li>
+        <li><strong>高精度分区域控温烘烤与恒温冷却：</strong>采用高精度多区独立控温热板严格控制 PAB/PEB 温度均匀性，烘烤后迅速转移至精密冷板（如恒定 22 ℃）均匀降温，稳定光化学反应。</li>
+        <li><strong>优化曝光工艺窗口与计算光刻：</strong>通过 FEM（曝光-焦距矩阵）实验确定最佳曝光剂量（BE）与最佳焦距（BF）；结合光刻机照明匀光、实时调焦调平补偿，并应用 OPC（光学邻近修正）、SMO 与 SRAF 改善不同疏密图形的线宽一致性。</li>
+        <li><strong>改进显影布液方式与微环境控制：</strong>采用扫描式细长喷口或动态多喷嘴均匀喷淋显影液，严格控温控时；强化匀胶显影机配套微环境温湿度控制与化学过滤，并在显影后通过 ADI 测量实现闭环反馈微调。</li>
+      </ol>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>做一块大披萨要让每一片烤得熟度完全一致（线宽均匀），必须同时满足四个条件：面饼擀得一样厚（涂胶均匀）、烤箱各处温度一模一样（烘烤均匀）、火力覆盖均匀（曝光均匀）、刷酱和出炉节奏一致（显影均匀）。任何一个环节掉链子，中间焦了边上还生（晶圆中心和边缘线宽就不一致）。
+      </div>
+      <ul>
+        <li><strong>驻波效应是怎么毁掉线宽的？（Slide 25）：</strong>单色激光穿过光刻胶打到硅衬底上，会被像镜子一样的衬底反射回来；入射光和反射光在光刻胶内部叠加干涉，形成一层亮一层暗的“驻波”。结果显影出来的光刻胶侧壁像锯齿一样凹凸不平，而且胶厚只要差四分之一波长，底部光强就会从波峰变成波谷，导致线宽剧烈震荡！因此现代工艺一方面加 <strong>BARC 抗反射层</strong>“吃掉”反射光，另一方面靠 <strong>PEB（后烘）</strong>让光敏剂分子轻微热扩散，把驻波锯齿“熨平”。</li>
+        <li><span class="ext-tag">【外部补充 / 通用原理】</span><strong>PEB 温度为何如此敏感？</strong>248 nm 及以下先进工艺普遍使用化学放大光刻胶（CAR），曝光只产生少量光生酸，真正放大反应靠 PEB 加热催化。PEB 热板只要有 0.5 ℃～1 ℃ 的局部温差，线宽就可能偏移几纳米——所以 Slide 32 的流程表里，每一步烘烤前后都会特意安排 `SLIM CHILL PLATE 22℃` 精确控温！</li>
+        <li><strong>对电路性能的影响：</strong>如果同一颗芯片左边晶体管的栅长是 28 nm、右边因为线宽不均变成了 31 nm，两侧门电路延迟就会不同步（产生时钟偏斜 Clock Skew），严重时造成时序违例（Setup/Hold Violation），芯片最高工作频率被迫降档甚至直接失效。</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ==================== 第 5 题 ==================== -->
+  <article class="q-card" id="q5">
+    <div class="q-header">
+      <div class="q-num">5</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p52 · 思考题 13</span>
+          <span class="badge badge-ppt">来源：第2章 光刻工艺 · Slide 14–15、47–49</span>
+        </div>
+        <h2 class="q-title">双极型掩模版（BIM）与相移掩模版（PSM）的根本区别是什么？为何相移掩模版能实现小于光源波长的图形转移，而双极型掩模版难以做到？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p><strong>1. 根本区别：</strong></p>
+      <ul>
+        <li><strong>双极型掩模版（BIM, Binary Intensity Mask）：</strong>仅对透射光的<strong>振幅（光强）</strong>进行二值调制，掩模版上只存在“透光（1）”和“不透光（0）”两种区域（如 COG 铬掩模、OMOG 硅化钼掩模），所有透光区出射光的<strong>相位完全相同（相移均为 0°）</strong>。</li>
+        <li><strong>相移掩模版（PSM, Phase-Shift Mask）：</strong>在调控光振幅的同时，还通过改变透明基板厚度（刻蚀石英）或引入半透明相移膜来调控透射光的<strong>相位</strong>，使相邻透光区域（或亮暗边界）出射的光波产生 <strong>180° 的相位差</strong>（典型包括交替相移掩模 Alt-PSM、衰减相移掩模 Att-PSM、无铬相移掩模等）。</li>
+      </ul>
+
+      <p><strong>2. 为何 PSM 能实现小于光源波长的图形转移，而 BIM 难以做到：</strong></p>
+      <ul>
+        <li><strong>BIM 难以实现亚波长转移的原因：</strong>当掩模图形线宽和间距缩小到接近或小于光源波长 λ 时，光的<strong>衍射效应</strong>显著增强，且受投影物镜有限数值孔径（NA）限制，高阶衍射光无法全部被收集。穿过相邻透光区的衍射光会扩散并重叠到中间的不透光区域；由于 BIM 相邻透光区相位相同（均为 0°），两束光发生<strong>相长叠加</strong>，导致不透光区域合成振幅不为零、光强（正比于振幅的平方，I ∝ |E|²）底部明显抬高，暗亮对比度急剧恶化，相邻图形模糊粘连，无法清晰分辨。</li>
+        <li><strong>PSM 实现亚波长转移的原因：</strong>PSM 使相邻透光区透出的光波具有 <strong>180° 相位差</strong>（电场振幅符号相反，一正一负）。两束衍射光在中间不透光区（相位突变处）重叠时发生<strong>相消干涉</strong>，振幅相互抵消并穿过零点，使相邻透光区之间的光强精确降为零！这大幅提高了成像的<strong>光强对比度和边缘斜率</strong>（相当于显著降低了瑞利判据中的工艺因子 k<sub>1</sub>），从而在不缩短波长 λ 的条件下实现线宽小于光源波长的图形转移，同时还扩大了工艺窗口（DOF）。</li>
+      </ul>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>把两束穿过掩模狭缝的光想象成水面上的两圈波纹。BIM 就像两只手<strong>同步向下拍水</strong>，两圈水波在中间相遇时波峰叠波峰，水面晃得很高（暗区不黑、图形糊在一起）；PSM 就像一只手向下拍、另一只手<strong>恰好反相向上提</strong>，两圈波纹在正中间波峰遇到波谷<strong>彻底互相抵消</strong>，水面出现一条极其平静锋利的“死水线”（暗区光强严格归零，边界像刀切一样清晰）！
+      </div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 820 315" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BIM与PSM振幅及光强分布对比">
+          <!-- Left: BIM -->
+          <rect x="12" y="10" width="388" height="295" rx="10" fill="#fff7ed" stroke="#fed7aa"/>
+          <text x="206" y="34" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9a3412">(a) 双极型掩模版（BIM）：同相 0° / 0°</text>
+          <!-- BIM Mask cross section -->
+          <rect x="52" y="48" width="308" height="16" fill="#e0f2fe" stroke="#0284c7"/>
+          <rect x="52" y="64" width="66" height="8" fill="#334155"/>
+          <rect x="174" y="64" width="64" height="8" fill="#334155"/>
+          <rect x="294" y="64" width="66" height="8" fill="#334155"/>
+          <text x="146" y="87" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">相移 0°</text>
+          <text x="266" y="87" text-anchor="middle" font-size="11.5" fill="#1d4ed8" font-weight="700">相移 0°</text>
+
+          <!-- BIM Amplitude -->
+          <line x1="55" y1="162" x2="365" y2="162" stroke="#64748b" stroke-width="1.3"/>
+          <line x1="55" y1="104" x2="55" y2="174" stroke="#64748b" stroke-width="1.3"/>
+          <text x="36" y="138" text-anchor="middle" font-size="11.5" fill="#475569">振幅</text>
+          <text x="36" y="152" text-anchor="middle" font-size="11" fill="#475569">E(x)</text>
+          <!-- Positive + Positive overlap -->
+          <path d="M 75 162 C 110 162, 118 110, 146 110 C 174 110, 184 142, 206 142 C 228 142, 238 110, 266 110 C 294 110, 302 162, 337 162" fill="none" stroke="#ea580c" stroke-width="2.6"/>
+          <circle cx="206" cy="142" r="4" fill="#dc2626"/>
+          <text x="206" y="132" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="700">相长叠加 ≠ 0</text>
+
+          <!-- BIM Intensity -->
+          <line x1="55" y1="274" x2="365" y2="274" stroke="#64748b" stroke-width="1.3"/>
+          <line x1="55" y1="200" x2="55" y2="282" stroke="#64748b" stroke-width="1.3"/>
+          <text x="36" y="238" text-anchor="middle" font-size="11.5" fill="#475569">光强</text>
+          <text x="36" y="252" text-anchor="middle" font-size="11" fill="#475569">I ∝ E²</text>
+          <line x1="55" y1="252" x2="360" y2="252" stroke="#94a3b8" stroke-dasharray="4,3"/>
+          <text x="342" y="248" font-size="10" fill="#64748b">曝光阈值</text>
+          <path d="M 75 274 C 110 274, 118 212, 146 212 C 174 212, 184 256, 206 256 C 228 256, 238 212, 266 212 C 294 212, 302 274, 337 274" fill="none" stroke="#c2410c" stroke-width="2.8"/>
+          <text x="206" y="294" text-anchor="middle" font-size="11.5" fill="#9a3412" font-weight="700">暗区底部抬高 → 对比度差，难以分辨亚波长图形</text>
+
+          <!-- Right: Alt-PSM -->
+          <rect x="420" y="10" width="388" height="295" rx="10" fill="#f0fdf4" stroke="#bbf7d0"/>
+          <text x="614" y="34" text-anchor="middle" font-size="14.5" font-weight="700" fill="#166534">(b) 交替相移掩模版（PSM）：反相 0° / 180°</text>
+          <!-- PSM Mask cross section with etched recess -->
+          <path d="M 460 48 L 768 48 L 768 64 L 702 64 L 702 56 L 646 56 L 646 64 L 460 64 Z" fill="#e0f2fe" stroke="#0284c7"/>
+          <rect x="460" y="64" width="66" height="8" fill="#334155"/>
+          <rect x="582" y="64" width="64" height="8" fill="#334155"/>
+          <rect x="702" y="64" width="66" height="8" fill="#334155"/>
+          <text x="554" y="87" text-anchor="middle" font-size="11.5" fill="#15803d" font-weight="700">相移 0°</text>
+          <text x="674" y="87" text-anchor="middle" font-size="11.5" fill="#7c3aed" font-weight="700">相移 180°（刻蚀台阶）</text>
+
+          <!-- PSM Amplitude -->
+          <line x1="463" y1="145" x2="773" y2="145" stroke="#64748b" stroke-width="1.3"/>
+          <line x1="463" y1="100" x2="463" y2="190" stroke="#64748b" stroke-width="1.3"/>
+          <text x="444" y="142" text-anchor="middle" font-size="11.5" fill="#475569">振幅</text>
+          <text x="444" y="156" text-anchor="middle" font-size="11" fill="#475569">E(x)</text>
+          <!-- Positive to Negative crossing 0 -->
+          <path d="M 483 145 C 516 145, 526 104, 554 104 C 582 104, 598 145, 614 145 C 630 145, 646 186, 674 186 C 702 186, 712 145, 745 145" fill="none" stroke="#15803d" stroke-width="2.6"/>
+          <circle cx="614" cy="145" r="4.5" fill="#15803d"/>
+          <text x="614" y="132" text-anchor="middle" font-size="11" fill="#15803d" font-weight="700">相消干涉 = 0</text>
+
+          <!-- PSM Intensity -->
+          <line x1="463" y1="274" x2="773" y2="274" stroke="#64748b" stroke-width="1.3"/>
+          <line x1="463" y1="200" x2="463" y2="282" stroke="#64748b" stroke-width="1.3"/>
+          <text x="444" y="238" text-anchor="middle" font-size="11.5" fill="#475569">光强</text>
+          <text x="444" y="252" text-anchor="middle" font-size="11" fill="#475569">I ∝ E²</text>
+          <line x1="463" y1="252" x2="768" y2="252" stroke="#94a3b8" stroke-dasharray="4,3"/>
+          <text x="750" y="248" font-size="10" fill="#64748b">曝光阈值</text>
+          <path d="M 483 274 C 516 274, 528 210, 554 210 C 580 210, 594 274, 614 274 C 634 274, 648 210, 674 210 C 700 210, 712 274, 745 274" fill="none" stroke="#15803d" stroke-width="2.8"/>
+          <circle cx="614" cy="274" r="4" fill="#15803d"/>
+          <text x="614" y="294" text-anchor="middle" font-size="11.5" fill="#166534" font-weight="700">暗区光强精确归零 → 对比度极高，突破波长限制</text>
+        </svg>
+        <div class="diagram-caption">图 3：双极型掩模版（BIM）与交替相移掩模版（PSM）的电场振幅及光强分布对比（复现第 2 章 Slide 49 原理）</div>
+      </div>
+
+      <p><strong>记住一个关键物理公式：</strong>光刻胶感光的不是“电场振幅 E”，而是“<strong>光强 I ∝ |E|²</strong>”。虽然右边透光区是负振幅（相位差 180°），但平方之后同样是正的光强，照样能正常曝光；妙就妙在正振幅过渡到负振幅的必经之路上，<strong>数学上连续函数必然穿过零点 E = 0</strong>！于是暗区中心光强被死死按在 0，两座光强山峰之间被劈开一道深邃清晰的峡谷。</p>
+      <div class="pitfall-box">
+        <strong>⚠️ 易错提醒：</strong>不要把“双极型掩模版（BIM）”和三极管里的“双极型晶体管（BJT）”混淆！这里的 BIM 是 <em>Binary Intensity Mask</em>（二值光强掩模版，教材译作“双极型掩模版”），意思是光强透过率只有 0 和 1 两个极端值，不改变相位。另外，石英基板刻蚀深度 <code>d</code> 要满足 <code>d = λ / [2(n - 1)]</code> 才能恰好产生 180°（半波长）相位差 <span class="ext-tag">【外部补充】</span>。
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    《集成电路制造与封装》第 1 次作业答案与讲解 · 严格对照课程 PPT（第 2 章 光刻工艺）与 2025 版教材整理
+  </footer>
+</main>
+
+<script>
+  function toggleAnswerOnly() {
+    document.body.classList.toggle('answer-only');
+    const btn = document.getElementById('toggleModeBtn');
+    const isOnly = document.body.classList.contains('answer-only');
+    btn.classList.toggle('active', isOnly);
+    btn.textContent = isOnly ? '恢复：答案 + 深度讲解' : '仅看手写答案模式';
+  }
+</script>
+</body>
+</html>

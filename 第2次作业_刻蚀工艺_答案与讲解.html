@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第2次作业（刻蚀工艺）· 参考答案与深度讲解</title>
+  <style>
+    :root {
+      --bg: #f6f9f9;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-soft: #f0fdfa;
+      --primary-border: #99f6e4;
+      --answer-bg: #f0fdf4;
+      --answer-border: #bbf7d0;
+      --answer-accent: #15803d;
+      --explain-bg: #f8fafc;
+      --explain-border: #cbd5e1;
+      --warn-bg: #fffbeb;
+      --warn-border: #fde68a;
+      --warn-text: #92400e;
+      --pitfall-bg: #fef2f2;
+      --pitfall-border: #fecaca;
+      --pitfall-text: #991b1b;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 15.5px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+    }
+    .topbar-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .nav-links a.home-link {
+      background: var(--primary-dark);
+      color: #fff;
+      border-color: var(--primary-dark);
+    }
+    .nav-links a.home-link:hover { opacity: 0.9; }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn {
+      cursor: pointer;
+      border: 1px solid var(--primary-border);
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 999px;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { background: #ccfbf1; }
+    .btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 26px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #134e4a 0%, #0f766e 55%, #0369a1 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 28px rgba(15, 118, 110, 0.18);
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.3;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 22px;
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.92);
+      margin-top: 12px;
+    }
+    .hero-tip {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border-left: 3px solid #5eead4;
+      border-radius: 8px;
+      font-size: 13.5px;
+    }
+
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      scroll-margin-top: 72px;
+    }
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .q-title-wrap { flex: 1; }
+    .q-source-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 6px;
+    }
+    .badge-book { background: #f1f5f9; color: #334155; }
+    .badge-ppt { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
+    .badge-ext { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+    .q-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.45;
+    }
+
+    .box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 14px;
+    }
+    .box-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+    .answer-box {
+      background: var(--answer-bg);
+      border: 1px solid var(--answer-border);
+    }
+    .answer-box .box-title { color: var(--answer-accent); }
+
+    .explain-box {
+      background: var(--explain-bg);
+      border: 1px solid var(--explain-border);
+    }
+    .explain-box .box-title { color: var(--primary-dark); }
+
+    .pitfall-box {
+      background: var(--pitfall-bg);
+      border: 1px solid var(--pitfall-border);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-size: 14.5px;
+    }
+    .pitfall-box strong { color: var(--pitfall-text); }
+
+    .analogy {
+      background: #ffffff;
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+      font-size: 14.8px;
+      color: #334155;
+    }
+
+    ul, ol {
+      margin: 6px 0 10px;
+      padding-left: 22px;
+    }
+    li { margin-bottom: 6px; }
+    p { margin: 6px 0 10px; }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.2px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 9px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #e2e8f0;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    .calc-step {
+      background: #fff;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 10px 0;
+    }
+    .calc-line {
+      font-family: "Cambria Math", "Times New Roman", Georgia, serif;
+      font-size: 17px;
+      margin: 6px 0;
+      color: #0f172a;
+    }
+    .ans-highlight {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 800;
+      padding: 1px 8px;
+      border-radius: 6px;
+      border: 1px solid #86efac;
+    }
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+      font-size: 0.92em;
+      line-height: 1.15;
+    }
+    .frac .num {
+      border-bottom: 1.5px solid #0f172a;
+      padding: 0 5px 2px;
+    }
+    .frac .den {
+      padding: 2px 5px 0;
+    }
+
+    .diagram-card {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 14px;
+      margin: 14px 0;
+      text-align: center;
+    }
+    .diagram-card svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-card img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .diagram-caption {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .ext-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--warn-text);
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      padding: 0 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+
+    body.answer-only .explain-box { display: none; }
+
+    footer {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 13px;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 15px; }
+      .topbar { padding: 8px 12px; }
+      .topbar-inner { gap: 8px; }
+      .nav-links { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; max-width: 100%; }
+      .nav-links a { flex-shrink: 0; font-size: 13px; padding: 5px 10px; }
+      .controls { width: 100%; justify-content: flex-end; }
+      .container { margin: 14px auto 40px; padding: 0 12px; }
+      .hero { padding: 20px 18px; border-radius: 14px; }
+      .hero h1 { font-size: 20px; }
+      .q-card { padding: 16px 15px; border-radius: 12px; }
+      .q-header { gap: 10px; }
+      .q-num { width: 30px; height: 30px; font-size: 14px; }
+      .q-title { font-size: 16.5px; }
+      .box { padding: 13px 14px; }
+      .calc-step { padding: 10px 12px; overflow-x: auto; }
+      .calc-line { font-size: 15.5px; }
+      .table-wrap { -webkit-overflow-scrolling: touch; }
+      th, td { padding: 7px 9px; font-size: 13.5px; }
+    }
+
+    @media print {
+      .topbar { display: none; }
+      body { background: #fff; font-size: 13.5px; }
+      .container { max-width: 100%; margin: 0; padding: 0; }
+      .q-card { box-shadow: none; break-inside: avoid; }
+      .hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <nav class="nav-links">
+      <a class="home-link" href="./index.html">← 作业总览</a>
+      <a href="#q1">第1题</a>
+      <a href="#q2">第2题</a>
+      <a href="#q3">第3题</a>
+      <a href="#q4">第4题</a>
+      <a href="#q5">第5题（计算）</a>
+      <a href="./第1次作业_光刻工艺_答案与讲解.html">← 切换：第1次作业</a>
+    </nav>
+    <div class="controls">
+      <button id="toggleModeBtn" class="btn" onclick="toggleAnswerOnly()">仅看手写答案模式</button>
+      <button class="btn" onclick="window.print()">打印 / 存PDF</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="hero-tag">《集成电路制造与封装》 · 授课教师：王鹏</div>
+    <h1>第 2 次作业：刻蚀工艺（答案与深度讲解）</h1>
+    <div class="hero-meta">
+      <span>📌 题目范围：平台 4 道简答题 + 教材 p72 思考题 2（共 5 题）</span>
+      <span>⏰ 截止时间：2026-11-30 23:59</span>
+      <span>📖 教材：吴汉明《集成电路制造技术》（2025.12）</span>
+    </div>
+    <div class="hero-tip">
+      <strong>提交提醒：</strong>作业拍成照片后<strong>合并为一个 PDF</strong> 上传至网络教学平台，<strong>纸面写上学号和姓名</strong>。第 5 题公式严格采用课件第 3 章 Slide 9、Slide 15 的定义。
+    </div>
+  </section>
+
+  <!-- ==================== 第 1 题 ==================== -->
+  <article class="q-card" id="q1">
+    <div class="q-header">
+      <div class="q-num">1</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">平台题 1</span>
+          <span class="badge badge-ppt">来源：第3章 刻蚀工艺 · Slide 7–9、12–14、30–33</span>
+        </div>
+        <h2 class="q-title">请比较物理刻蚀法和化学刻蚀法的不同。</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:18%;">比较维度</th>
+              <th style="width:41%;">物理刻蚀法（如溅射刻蚀、离子束铣削）</th>
+              <th style="width:41%;">化学刻蚀法（如湿法化学刻蚀、纯化学等离子体刻蚀）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>刻蚀机理</strong></td>
+              <td>依靠高能离子（如 Ar⁺）在电场加速下垂直轰击材料表面，通过动量传递将表面原子物理溅射/敲击去除（纯物理过程）。</td>
+              <td>依靠液态刻蚀剂或气态活性自由基与目标材料发生化学反应，生成可溶性或可挥发性产物并被带走（纯化学过程）。</td>
+            </tr>
+            <tr>
+              <td><strong>方向性（各向异性）</strong></td>
+              <td><strong>各向异性极好</strong>，离子定向轰击，侧壁陡直、几乎无侧向钻蚀。</td>
+              <td>通常为<strong>各向同性</strong>，刻蚀剂向各个方向均匀反应，易产生钻蚀（注：单晶硅在特定碱液中因晶面原子密度差异可呈各向异性）。</td>
+            </tr>
+            <tr>
+              <td><strong>选择比（选择性）</strong></td>
+              <td><strong>选择比很低</strong>（高能离子无差别撞击，掩模和下层材料也会被一起刻蚀）。</td>
+              <td><strong>选择比很高</strong>（化学反应只针对特定材料，对掩模与停止层几乎不反应）。</td>
+            </tr>
+            <tr>
+              <td><strong>工艺条件（压强/能量）</strong></td>
+              <td><strong>低压强、高离子能量</strong>（减少碰撞以保证垂直方向性）。</td>
+              <td><strong>较高压强（或常压液相）、低能量</strong>（保证充足反应物浓度）。</td>
+            </tr>
+            <tr>
+              <td><strong>刻蚀速率</strong></td>
+              <td>较慢（纯物理溅射效率较低）。</td>
+              <td>较快（化学反应速率通常较高，受温度和浓度控制）。</td>
+            </tr>
+            <tr>
+              <td><strong>表面损伤与产物</strong></td>
+              <td>易造成晶格损伤、高能轰击残留或非挥发物再沉积。</td>
+              <td>几乎无物理晶格损伤，表面光滑（但湿法需处理化学废液，精细图形保真度差）。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><em>补充总结：实际集成电路先进制造中通常采用<strong>反应离子刻蚀（RIE / ICP）</strong>，将物理轰击与化学刻蚀相结合，借助协同效应既获得高方向性、较好选择比，又使刻蚀速率远高于单一方式（Slide 33）。</em></p>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>物理刻蚀就像“高压喷砂机垂直向下喷砂”，指哪打哪、切口笔直（各向异性好），但不管下面是木头还是铁板全给你打穿（选择比差）；化学刻蚀就像“除锈剂浸泡”，只溶铁锈不伤好铁（选择比极高），但液体会顺着缝隙往左右两边乱钻（各向同性、易钻蚀）。
+      </div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 800 185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="物理刻蚀与化学刻蚀剖面及性能权衡">
+          <!-- Left: Physical -->
+          <rect x="12" y="10" width="245" height="165" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+          <text x="134" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e3a8a">纯物理刻蚀（离子轰击）</text>
+          <!-- Arrows -->
+          <line x1="115" y1="42" x2="115" y2="92" stroke="#2563eb" stroke-width="2"/>
+          <line x1="134" y1="42" x2="134" y2="92" stroke="#2563eb" stroke-width="2"/>
+          <line x1="153" y1="42" x2="153" y2="92" stroke="#2563eb" stroke-width="2"/>
+          <!-- Eroded mask -->
+          <path d="M 42 74 L 96 74 L 104 82 L 42 82 Z" fill="#fbbf24" stroke="#b45309"/>
+          <path d="M 164 82 L 172 74 L 226 74 L 226 82 Z" fill="#fbbf24" stroke="#b45309"/>
+          <!-- Substrate with vertical wall -->
+          <path d="M 42 82 L 104 82 L 104 128 L 164 128 L 164 82 L 226 82 L 226 142 L 42 142 Z" fill="#94a3b8" stroke="#475569"/>
+          <text x="134" y="161" text-anchor="middle" font-size="11.5" fill="#1e3a8a" font-weight="600">方向性极好 · 选择比低 · 掩模受损</text>
+
+          <!-- Middle: Tradeoff arrows (Slide 8/30) -->
+          <rect x="275" y="10" width="250" height="165" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="400" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">工艺谱系权衡（Slide 8 / 30）</text>
+          <text x="400" y="54" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1d4ed8">▲ 物理主导：能量↑ 各向异性↑</text>
+          <rect x="315" y="62" width="170" height="22" rx="5" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="400" y="77" text-anchor="middle" font-size="11.5" fill="#1e3a8a">溅射刻蚀 / 离子束铣削</text>
+          <rect x="315" y="90" width="170" height="24" rx="5" fill="#ccfbf1" stroke="#5eead4"/>
+          <text x="400" y="106" text-anchor="middle" font-size="11.5" font-weight="700" fill="#115e59">RIE / ICP（物理+化学协同）</text>
+          <rect x="315" y="120" width="170" height="22" rx="5" fill="#dcfce7" stroke="#86efac"/>
+          <text x="400" y="135" text-anchor="middle" font-size="11.5" fill="#166534">纯化学等离子体 / 湿法刻蚀</text>
+          <text x="400" y="161" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15803d">▼ 化学主导：压强↑ 选择性↑</text>
+
+          <!-- Right: Chemical -->
+          <rect x="543" y="10" width="245" height="165" rx="10" fill="#f0fdf4" stroke="#bbf7d0"/>
+          <text x="665" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#166534">纯化学刻蚀（湿法/自由基）</text>
+          <!-- Intact mask -->
+          <rect x="573" y="68" width="62" height="14" fill="#fbbf24" stroke="#b45309"/>
+          <rect x="695" y="68" width="62" height="14" fill="#fbbf24" stroke="#b45309"/>
+          <!-- Undercut isotropic profile -->
+          <path d="M 573 82 L 612 82 C 612 114, 626 128, 665 128 C 704 128, 718 114, 718 82 L 757 82 L 757 142 L 573 142 Z" fill="#94a3b8" stroke="#475569"/>
+          <text x="665" y="161" text-anchor="middle" font-size="11.5" fill="#166534" font-weight="600">选择比极高 · 各向同性（有钻蚀）</text>
+        </svg>
+        <div class="diagram-caption">图 1：纯物理刻蚀、RIE/ICP 协同刻蚀与纯化学刻蚀的形貌与指标权衡（对照第 3 章 Slide 8、30、33）</div>
+      </div>
+
+      <p><strong>经典实验洞察（Coburn-Winters 曲线，Slide 33）：</strong>单独通入 XeF₂ 气体（纯化学）刻硅速率很低，单独用 Ar⁺ 离子束轰击（纯物理）速率也极低；但两者<strong>同时开启</strong>时，硅刻蚀速率瞬间暴涨近 10 倍！原因是离子轰击先打断硅表面顽固的化学键并把反应副产物“震飞”，让化学自由基反应变得无比轻松——这就是现代芯片厂离不开 RIE 的根本物理原因。</p>
+    </div>
+  </article>
+
+  <!-- ==================== 第 2 题 ==================== -->
+  <article class="q-card" id="q2">
+    <div class="q-header">
+      <div class="q-num">2</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">平台题 2</span>
+          <span class="badge badge-ppt">来源：第3章 刻蚀工艺 · Slide 8、12、16–19、30</span>
+        </div>
+        <h2 class="q-title">如果一个刻蚀过程需要很高的选择比，请问应该推荐哪种刻蚀法？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p>应推荐<strong>化学刻蚀法</strong>，在具体工艺中首选<strong>湿法化学刻蚀</strong>（若因图形尺寸小、需要兼顾一定方向性而必须使用干法，则选用以化学反应为主的<strong>等离子体化学刻蚀</strong>或调低偏压、提高化学刻蚀比例的反应离子刻蚀）。</p>
+      <p><strong>原因：</strong></p>
+      <ol>
+        <li>根据刻蚀工艺特性对比（Slide 8、30），刻蚀过程越偏向<strong>化学过程</strong>，<strong>选择性（选择比）越高</strong>；越偏向物理过程，选择比越低。</li>
+        <li>化学刻蚀利用特定化学试剂与目标薄膜之间的选择性化学反应实现材料去除，对掩模层和下层衬底/停止层几乎不发生反应（例如使用 HF / BOE 湿法刻蚀 SiO₂ 时，对下层 Si 几乎不腐蚀，选择比极高）。</li>
+        <li>因此，在需要极高选择比（例如彻底清除表面薄膜且不能损伤极薄下层器件结构或衬底）的场合，首选湿法化学刻蚀。</li>
+      </ol>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <p><strong>把这道题放回真实芯片制造场景：</strong>比如我们要刻掉晶圆表面的一层 SiO₂，而它的正下方就是单晶硅有源区（未来晶体管的导电沟道）。如果用高能物理轰击去打，不仅很容易把薄薄的光刻胶打穿，而且一不小心过刻几秒，就会把底下娇贵的硅衬底表面打得坑坑洼洼、晶格受损，导致载流子迁移率暴跌、漏电流剧增！</p>
+      <p>而换用 <strong>HF / BOE（缓冲氧化刻蚀剂，Slide 19）湿法化学刻蚀</strong>，HF 只和 SiO₂ 发生化学反应生成可溶的 H₂SiF₆，遇到下面的单晶硅几乎“自动刹车”，选择比可达几十甚至上百比一！</p>
+      <div class="pitfall-box">
+        <strong>⚠️ 答题技巧：</strong>题目问“推荐哪种刻蚀法”，答出<strong>“化学刻蚀法（首选湿法化学刻蚀）”</strong>是核心得分点；如果再补一句“若图形尺寸极小需兼顾方向性，则选以化学反应为主的干法等离子体刻蚀”，逻辑就滴水不漏了。
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== 第 3 题 ==================== -->
+  <article class="q-card" id="q3">
+    <div class="q-header">
+      <div class="q-num">3</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">平台题 3</span>
+          <span class="badge badge-ppt">来源：第3章 刻蚀工艺 · Slide 9、12–15、44</span>
+        </div>
+        <h2 class="q-title">请简述刻蚀过程中的 under cut 产生的原因。</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p><strong>Under cut（钻蚀 / 底切 / 侧蚀）</strong>是指刻蚀不仅沿掩模开口垂直向下进行，还横向侵入到掩模（如光刻胶）下方，将掩模边缘底部的材料刻掉，导致刻蚀区域超出掩模开口、侧壁内凹、掩模边缘“悬空”的现象（Slide 9）。</p>
+      <p><strong>主要产生原因如下：</strong></p>
+      <ol>
+        <li><strong>在干法 / RIE 等离子体刻蚀中（Slide 44 核心原因）：</strong>刻蚀过程中<strong>化学活性基团（自由基）反应过强</strong>（或腔室气压偏高导致离子方向性变差、侧壁钝化保护不足），使原本以纵向定向刻蚀为主的 RIE <strong>转变为各向同性刻蚀</strong>，活性基团向侧壁无方向性扩散并横向腐蚀掩模下方材料，造成钻蚀、深宽比减小。</li>
+        <li><strong>在湿法刻蚀中（Slide 12–15）：</strong>湿法刻蚀以化学反应为主，液态刻蚀剂在各个方向上均匀扩散并发生<strong>各向同性刻蚀</strong>，向下刻蚀的同时必然沿水平方向横向腐蚀掩模下方材料。</li>
+        <li><strong>工艺附加因素：</strong>① 为清除残留薄膜而进行过度<strong>过刻（Over-etch）</strong>时，纵向已被下层停止层挡住，横向继续刻蚀导致钻蚀宽度增大；② 光刻胶与待刻蚀材料界面<strong>附着力不足</strong>，刻蚀剂渗入掩模与薄膜界面处加剧侧蚀。</li>
+      </ol>
+      <p><em>（工程抑制方法：在深硅等离子体刻蚀中常采用 <strong>Bosch 工艺</strong>，通过 SF₆ 刻蚀与 C₄F₈ 侧壁钝化保护交替循环来有效抑制钻蚀，Slide 44。）</em></p>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="diagram-card">
+        <svg viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Under-cut 钻蚀与 Bosch 工艺抑制机理">
+          <!-- Ideal -->
+          <rect x="12" y="10" width="235" height="160" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="130" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0f172a">理想垂直刻蚀</text>
+          <rect x="40" y="54" width="60" height="18" fill="#2563eb"/>
+          <rect x="160" y="54" width="60" height="18" fill="#2563eb"/>
+          <path d="M 40 72 L 100 72 L 100 128 L 160 128 L 160 72 L 220 72 L 220 144 L 40 144 Z" fill="#f97316"/>
+          <text x="130" y="160" text-anchor="middle" font-size="11.5" fill="#475569">侧壁 90° 陡直，无横向损失</text>
+
+          <!-- Under-cut -->
+          <rect x="268" y="10" width="248" height="160" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+          <text x="392" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#991b1b">发生钻蚀（Under-cut）</text>
+          <rect x="296" y="54" width="62" height="18" fill="#2563eb"/>
+          <rect x="426" y="54" width="62" height="18" fill="#2563eb"/>
+          <path d="M 296 72 L 332 72 C 322 92, 326 126, 358 128 L 426 128 C 458 126, 462 92, 452 72 L 488 72 L 488 144 L 296 144 Z" fill="#f97316"/>
+          <text x="342" y="96" font-size="10.5" fill="#991b1b" font-weight="700">←钻蚀</text>
+          <text x="442" y="96" font-size="10.5" fill="#991b1b" font-weight="700">钻蚀→</text>
+          <text x="392" y="160" text-anchor="middle" font-size="11.5" fill="#991b1b">活性基团反应过强 → 掩模悬空</text>
+
+          <!-- Bosch -->
+          <rect x="538" y="10" width="250" height="160" rx="10" fill="#f0fdf4" stroke="#bbf7d0"/>
+          <text x="663" y="32" text-anchor="middle" font-size="13.5" font-weight="700" fill="#166534">解决：Bosch 交替工艺</text>
+          <rect x="568" y="54" width="58" height="18" fill="#2563eb"/>
+          <rect x="700" y="54" width="58" height="18" fill="#2563eb"/>
+          <!-- Scalloped profile -->
+          <path d="M 568 72 L 626 72 Q 616 82 626 92 Q 616 102 626 112 Q 616 122 626 130 L 700 130 Q 710 122 700 112 Q 710 102 700 92 Q 710 82 700 72 L 758 72 L 758 144 L 568 144 Z" fill="#f97316"/>
+          <!-- Green passivation film on sidewalls -->
+          <path d="M 626 72 Q 616 82 626 92 Q 616 102 626 112" fill="none" stroke="#15803d" stroke-width="3"/>
+          <path d="M 700 72 Q 710 82 700 92 Q 710 102 700 112" fill="none" stroke="#15803d" stroke-width="3"/>
+          <text x="663" y="160" text-anchor="middle" font-size="11.5" fill="#166534">SF₆ 刻蚀 + C₄F₈ 侧壁钝化循环</text>
+        </svg>
+        <div class="diagram-caption">图 2：理想刻蚀、钻蚀（Under-cut）与 Bosch 工艺抑制钻蚀原理（对应第 3 章 Slide 44）</div>
+      </div>
+
+      <p><strong>为什么工厂对 Under-cut 深恶痛绝？</strong>在刻蚀多晶硅栅极或细金属互连线时，光刻机费劲千辛万苦才把 10 nm 的光刻胶线宽刻准，如果刻蚀时左右各钻蚀掉 2 nm，实际栅长就只剩 6 nm——这会直接导致 MOSFET 阈值电压 V<sub>th</sub> 暴跌、源漏穿通漏电，甚至整条金属线被从底部“掏空”倒塌！</p>
+      <p><strong>Bosch 工艺的巧思（Slide 44）：</strong>既然 SF₆ 刻硅太猛会往两边钻，那就“刻一小口（SF₆）→ 赶紧通入 C₄F₈ 在侧壁和底部镀一层类似不粘锅特氟龙的氟碳钝化保护膜 → 再用垂直离子轰击只把<strong>底部</strong>的保护膜打穿，而<strong>侧壁</strong>保护膜完好留存 → 再刻一小口”如此循环，就能挖出极深的垂直深孔（用于 TSV 硅通孔、MEMS 等）。</p>
+    </div>
+  </article>
+
+  <!-- ==================== 第 4 题 ==================== -->
+  <article class="q-card" id="q4">
+    <div class="q-header">
+      <div class="q-num">4</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">平台题 4</span>
+          <span class="badge badge-ppt">来源：第3章 刻蚀工艺 · Slide 42</span>
+          <span class="badge badge-ext">含侧壁离子反射机制补充</span>
+        </div>
+        <h2 class="q-title">请简述沟槽刻蚀过程中 trench 现象产生的位置和原因。</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p>沟槽刻蚀中的 <strong>trench 现象</strong>（又称<strong>微沟槽效应 / Micro-trench 效应</strong>）是等离子体刻蚀中一种典型的轮廓缺陷（Slide 42）。</p>
+      <ul>
+        <li><strong>产生位置：</strong>出现在刻蚀形成的<strong>沟槽或孔洞的底部边角处</strong>（即槽底与侧壁的交界拐角处），表现为非预期的局部过度刻蚀，形成类似微型“沟渠”的下凹坑。</li>
+        <li><strong>产生原因：</strong>
+          <ol>
+            <li><strong>电子/离子充电效应导致的库仑偏转（Slide 42 核心原因）：</strong>等离子体中电子质量轻、运动方向随机，容易优先到达并积累在沟槽上部的绝缘掩模及侧壁顶部形成负电荷，而具有强方向性的正离子到达沟槽底部使底部积累正电荷；这些局域电荷产生的电场通过<strong>库仑力</strong>使后续垂直入射的正离子轰击方向向侧壁边角偏移，离子通量集中在底部边角处，导致该处局部刻蚀速率加快，形成微沟槽。</li>
+            <li><strong><span class="ext-tag">【补充机理】</span>离子在侧壁的掠射反射聚焦：</strong>部分带轻微倾角入射的高能离子撞击到近垂直（或略倾斜）的沟槽侧壁后，发生掠射反射并沿侧壁汇聚到底部边角处，使拐角处的有效离子轰击通量明显高于沟槽中心，进一步加剧局部过刻。</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+      <div class="analogy">
+        <strong>直观类比：</strong>就像下雨天雨水垂直落入方槽里，如果两侧墙壁不仅“带磁力”把靠近的雨滴往墙根拉，还会把斜着打到墙上的水珠全滑流汇聚到墙角——结果就是<strong>墙角最先被冲出两道深水沟</strong>，而槽子正中间反而比较浅！
+      </div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 640 245" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Micro-trench 微沟槽效应物理机制">
+          <defs>
+            <marker id="arrDark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#0f172a"/>
+            </marker>
+          </defs>
+          <!-- Mask (SiO2) -->
+          <rect x="120" y="65" width="120" height="36" fill="#2563eb"/>
+          <rect x="400" y="65" width="120" height="36" fill="#2563eb"/>
+          <text x="180" y="88" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">绝缘掩模</text>
+          <text x="460" y="88" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">绝缘掩模</text>
+
+          <!-- Substrate with micro-trenches at bottom corners -->
+          <path d="M 120 101 L 240 101 L 240 185 C 240 212, 255 212, 266 190 L 374 190 C 385 212, 400 212, 400 185 L 400 101 L 520 101 L 520 228 L 120 228 Z" fill="#f97316"/>
+          <text x="320" y="218" text-anchor="middle" font-size="12.5" fill="#fff" font-weight="700">衬底（如 Si / SiC）</text>
+
+          <!-- Negative electrons at top mask corners -->
+          <g fill="#ef4444" stroke="#7f1d1d" stroke-width="1">
+            <circle cx="212" cy="60" r="8"/><circle cx="230" cy="62" r="8"/><circle cx="242" cy="74" r="8"/><circle cx="242" cy="92" r="8"/>
+            <circle cx="428" cy="60" r="8"/><circle cx="410" cy="62" r="8"/><circle cx="398" cy="74" r="8"/><circle cx="398" cy="92" r="8"/>
+          </g>
+          <g fill="#fff" font-size="12" font-weight="800" text-anchor="middle">
+            <text x="212" y="64">−</text><text x="230" y="66">−</text><text x="242" y="78">−</text><text x="242" y="96">−</text>
+            <text x="428" y="64">−</text><text x="410" y="66">−</text><text x="398" y="78">−</text><text x="398" y="96">−</text>
+          </g>
+          <text x="155" y="45" text-anchor="middle" font-size="11.5" fill="#b91c1c" font-weight="700">轻电子优先到达并带负电</text>
+
+          <!-- Positive ions at bottom center -->
+          <g fill="#22c55e" stroke="#14532d" stroke-width="1">
+            <circle cx="300" cy="182" r="8.5"/><circle cx="320" cy="182" r="8.5"/><circle cx="340" cy="182" r="8.5"/>
+          </g>
+          <g fill="#fff" font-size="12" font-weight="800" text-anchor="middle">
+            <text x="300" y="186">+</text><text x="320" y="186">+</text><text x="340" y="186">+</text>
+          </g>
+          <text x="320" y="166" text-anchor="middle" font-size="11" fill="#166534" font-weight="700">底部正电荷排斥</text>
+
+          <!-- Incoming positive ions deflecting to corners -->
+          <circle cx="272" cy="24" r="10" fill="#22c55e" stroke="#14532d" stroke-width="1.2"/>
+          <text x="272" y="28" text-anchor="middle" font-size="13" fill="#fff" font-weight="800">+</text>
+          <path d="M 272 36 Q 272 130 252 192" fill="none" stroke="#0f172a" stroke-width="2.2" marker-end="url(#arrDark)"/>
+
+          <circle cx="368" cy="24" r="10" fill="#22c55e" stroke="#14532d" stroke-width="1.2"/>
+          <text x="368" y="28" text-anchor="middle" font-size="13" fill="#fff" font-weight="800">+</text>
+          <path d="M 368 36 Q 368 130 388 192" fill="none" stroke="#0f172a" stroke-width="2.2" marker-end="url(#arrDark)"/>
+
+          <!-- Callouts for micro-trench -->
+          <circle cx="250" cy="196" r="17" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+          <circle cx="390" cy="196" r="17" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+          <text x="64" y="198" text-anchor="middle" font-size="12" fill="#dc2626" font-weight="700">底部边角</text>
+          <text x="64" y="214" text-anchor="middle" font-size="12" fill="#dc2626" font-weight="700">微沟槽凹陷</text>
+          <line x1="108" y1="198" x2="230" y2="198" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="3,2"/>
+        </svg>
+        <div class="diagram-caption">图 3：沟槽刻蚀中 Micro-trench（微沟槽效应）的电荷分布与离子轨道偏转物理图像（复现第 3 章 Slide 42）</div>
+      </div>
+
+      <p><strong>危害与器件可靠性联系：</strong>微沟槽在沟槽底部边角留下的尖锐凹坑对功率器件（如 Slide 42 SEM 图中的 SiC 沟槽 MOSFET）和 CMOS 的 STI 浅沟槽隔离危害极大——① <strong>尖端电场集中</strong>：通高压时尖锐拐角处的局部电场强度飙升，导致栅氧提前击穿、耐压大幅下降；② <strong>填充空洞（Void）</strong>：后续 CVD 填充绝缘介质时，深窄微沟槽容易在顶部提前封口留下空洞，破坏芯片长期可靠性。</p>
+    </div>
+  </article>
+
+  <!-- ==================== 第 5 题 ==================== -->
+  <article class="q-card" id="q5">
+    <div class="q-header">
+      <div class="q-num">5</div>
+      <div class="q-title-wrap">
+        <div class="q-source-row">
+          <span class="badge badge-book">教材 p72 · 思考题 2（计算题）</span>
+          <span class="badge badge-ppt">来源：第3章 刻蚀工艺 · Slide 9、15</span>
+        </div>
+        <h2 class="q-title">如图 3-2-1 所示，经过 40 s 刻蚀图形发生了纵向刻蚀和横向刻蚀，如横向刻蚀深度为 20 nm，纵向刻蚀深度为 80 nm，请问纵向和横向刻蚀速率分别为多少？刻蚀方向性为多少？若光刻胶被刻蚀了 5 nm，刻蚀选择比为多少？</h2>
+      </div>
+    </div>
+
+    <div class="box answer-box">
+      <div class="box-title">📝 规范参考答案（手写交作业版）</div>
+      <p><strong>解：</strong></p>
+      <p><strong>已知：</strong>刻蚀时间 Δt = 40 s，待刻蚀薄膜纵向刻蚀深度 Δx<sub>1</sub> = 80 nm，横向刻蚀深度 Δx<sub>L</sub> = 20 nm，光刻胶被刻蚀厚度 Δx<sub>2</sub> = 5 nm。</p>
+
+      <div class="calc-step">
+        <p><strong>（1）纵向刻蚀速率 r<sub>1</sub> 和横向刻蚀速率 R<sub>L</sub>：</strong></p>
+        <div class="calc-line">
+          r<sub>1</sub> = <span class="frac"><span class="num">Δx<sub>1</sub></span><span class="den">Δt</span></span>
+          = <span class="frac"><span class="num">80 nm</span><span class="den">40 s</span></span>
+          = <span class="ans-highlight">2 nm/s</span>
+        </div>
+        <div class="calc-line">
+          R<sub>L</sub> = <span class="frac"><span class="num">Δx<sub>L</sub></span><span class="den">Δt</span></span>
+          = <span class="frac"><span class="num">20 nm</span><span class="den">40 s</span></span>
+          = <span class="ans-highlight">0.5 nm/s</span>
+        </div>
+      </div>
+
+      <div class="calc-step">
+        <p><strong>（2）刻蚀方向性（各向异性度）A：</strong>（依据课程 Slide 15 公式）</p>
+        <div class="calc-line">
+          A = <span class="frac"><span class="num">r<sub>1</sub> − R<sub>L</sub></span><span class="den">r<sub>1</sub></span></span>
+          = 1 − <span class="frac"><span class="num">R<sub>L</sub></span><span class="den">r<sub>1</sub></span></span>
+          = <span class="frac"><span class="num">2 − 0.5</span><span class="den">2</span></span>
+          = <span class="ans-highlight">0.75</span>（即 <strong>75%</strong>）
+        </div>
+      </div>
+
+      <div class="calc-step">
+        <p><strong>（3）刻蚀选择比 S（待刻蚀材料对光刻胶）：</strong>（依据课程 Slide 9、15 公式）</p>
+        <div class="calc-line">
+          光刻胶刻蚀速率：r<sub>2</sub> = <span class="frac"><span class="num">Δx<sub>2</sub></span><span class="den">Δt</span></span>
+          = <span class="frac"><span class="num">5 nm</span><span class="den">40 s</span></span>
+          = 0.125 nm/s
+        </div>
+        <div class="calc-line">
+          S = <span class="frac"><span class="num">r<sub>1</sub></span><span class="den">r<sub>2</sub></span></span>
+          = <span class="frac"><span class="num">2 nm/s</span><span class="den">0.125 nm/s</span></span>
+          = <span class="frac"><span class="num">80 nm</span><span class="den">5 nm</span></span>
+          = <span class="ans-highlight">16</span>（即 <strong>16 : 1</strong>）
+        </div>
+      </div>
+
+      <p><strong>答：</strong>纵向刻蚀速率为 <strong>2 nm/s</strong>，横向刻蚀速率为 <strong>0.5 nm/s</strong>；刻蚀方向性为 <strong>0.75（75%）</strong>；刻蚀选择比为 <strong>16（16 : 1）</strong>。</p>
+    </div>
+
+    <div class="box explain-box">
+      <div class="box-title">💡 深度原理讲解（知其所以然）</div>
+
+      <div class="diagram-card">
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="思考题2尺寸标注图解">
+          <!-- Etched away photoresist (5nm) -->
+          <rect x="90" y="34" width="160" height="14" fill="#fde68a" stroke="#d97706" stroke-dasharray="4,2"/>
+          <rect x="450" y="34" width="160" height="14" fill="#fde68a" stroke="#d97706" stroke-dasharray="4,2"/>
+          <!-- Remaining photoresist -->
+          <rect x="90" y="48" width="160" height="34" fill="#bbf7d0" stroke="#15803d" stroke-width="1.5"/>
+          <rect x="450" y="48" width="160" height="34" fill="#bbf7d0" stroke="#15803d" stroke-width="1.5"/>
+          <text x="170" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">光刻胶</text>
+          <text x="530" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">光刻胶</text>
+
+          <!-- Target film with lateral undercut (20nm) & vertical etch (80nm) -->
+          <path d="M 90 82 L 210 82 C 210 132, 232 162, 268 162 L 432 162 C 468 162, 490 132, 490 82 L 610 82 L 610 162 L 90 162 Z" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1.5"/>
+          <!-- Substrate -->
+          <rect x="90" y="162" width="520" height="32" fill="#cbd5e1" stroke="#475569" stroke-width="1.5"/>
+          <text x="350" y="183" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">衬底（刻蚀停止层）</text>
+
+          <!-- Dimension annotations -->
+          <!-- Vertical 80 nm -->
+          <line x1="350" y1="82" x2="350" y2="162" stroke="#dc2626" stroke-width="2.2"/>
+          <line x1="342" y1="82" x2="358" y2="82" stroke="#dc2626" stroke-width="1.8"/>
+          <line x1="342" y1="162" x2="358" y2="162" stroke="#dc2626" stroke-width="1.8"/>
+          <text x="358" y="126" font-size="12.5" font-weight="700" fill="#dc2626">纵向 Δx₁ = 80 nm（r₁ = 2 nm/s）</text>
+
+          <!-- Lateral 20 nm -->
+          <line x1="210" y1="98" x2="250" y2="98" stroke="#7c3aed" stroke-width="2.2"/>
+          <line x1="210" y1="90" x2="210" y2="106" stroke="#7c3aed" stroke-width="1.8"/>
+          <line x1="250" y1="82" x2="250" y2="106" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="150" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9">横向 ΔxL = 20 nm</text>
+          <text x="150" y="132" text-anchor="middle" font-size="11.5" fill="#6d28d9">（RL = 0.5 nm/s）</text>
+
+          <!-- Photoresist loss 5 nm -->
+          <line x1="622" y1="34" x2="622" y2="48" stroke="#d97706" stroke-width="2.2"/>
+          <text x="630" y="45" font-size="12" font-weight="700" fill="#b45309">胶损 5 nm</text>
+          <text x="630" y="61" font-size="11" fill="#b45309">(r₂ = 0.125 nm/s)</text>
+        </svg>
+        <div class="diagram-caption">图 4：第 5 题（教材思考题 2）各物理量尺寸对应关系示意图</div>
+      </div>
+
+      <div class="diagram-card">
+        <img src="./assets/fig-3-2-1.jpg" alt="教材图 3-2-1 横向刻蚀的结构示意图" />
+        <div class="diagram-caption">附图：教材原图 3-2-1（横向刻蚀的结构示意图）</div>
+      </div>
+
+      <p><strong>物理直觉检验算出来的数字意味着什么：</strong></p>
+      <ul>
+        <li><strong>方向性 A = 1 − R<sub>L</sub> / r<sub>1</sub> 的两个极限：</strong>
+          <ul>
+            <li>当完全没有横向钻蚀（R<sub>L</sub> = 0）时，<strong>A = 1</strong> → 理想<strong>完全各向异性</strong>刻蚀（完美垂直侧壁）；</li>
+            <li>当横向和纵向刻得一样快（R<sub>L</sub> = r<sub>1</sub>）时，<strong>A = 0</strong> → 理想<strong>完全各向同性</strong>刻蚀；</li>
+            <li>本题 <strong>A = 0.75</strong>，介于 0 和 1 之间，说明是以纵向为主的<strong>部分各向异性刻蚀</strong>，但仍有四分之一程度的横向钻蚀。</li>
+          </ul>
+        </li>
+        <li><strong>选择比 S = 16 的工程含义：</strong>每往下刻掉 16 nm 的目标薄膜，只会损耗 1 nm 的光刻胶掩模。这个选择比相当不错，说明掩模能稳稳扛住整个 80 nm 刻蚀及后续 10%~20% 的过刻（Over-etch）而不被“打穿”。</li>
+      </ul>
+
+      <div class="pitfall-box">
+        <strong>⚠️ 高频易错点提醒：</strong>
+        <ol style="margin-bottom:0;">
+          <li><strong>方向性公式别用混！</strong>有些外部资料把 <code>r<sub>1</sub> / R<sub>L</sub> = 4</code> 叫作“各向异性比”，但<strong>本课程课件（第 3 章 Slide 15）明确定义方向性为 <code>(r<sub>1</sub> − R<sub>L</sub>) / r<sub>1</sub></code></strong>，考试与作业务必以课件公式 <code>0.75</code> 为准！</li>
+          <li><strong>选择比分子分母别写反！</strong>始终是 <code>待刻蚀目标材料速率 r<sub>1</sub> / 掩模(或下层停止层)速率 r<sub>2</sub></code>，越大越好（写反成 1/16 就错啦）。</li>
+        </ol>
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    《集成电路制造与封装》第 2 次作业答案与讲解 · 严格对照课程 PPT（第 3 章 刻蚀工艺）与 2025 版教材整理
+  </footer>
+</main>
+
+<script>
+  function toggleAnswerOnly() {
+    document.body.classList.toggle('answer-only');
+    const btn = document.getElementById('toggleModeBtn');
+    const isOnly = document.body.classList.contains('answer-only');
+    btn.classList.toggle('active', isOnly);
+    btn.textContent = isOnly ? '恢复：答案 + 深度讲解' : '仅看手写答案模式';
+  }
+</script>
+</body>
+</html>
